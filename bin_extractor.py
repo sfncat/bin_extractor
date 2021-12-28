@@ -104,15 +104,16 @@ def get_all_file(folder_path, file_ext=''):
 def extractor(file_path: str):
     print(f'extract bin file {file_path}')
     filename, ext = get_filename_ext(file_path)
-    dir = os.path.dirname(file_path)
+    dir = os.path.dirname(os.path.abspath(file_path))
     tmp_dir = os.path.join(dir, filename + '_' + get_second() + '_extracted')
     sub_dir = '_' + filename + ext + '.extracted'
     output = execute_shell_command(f'binwalk -Me --directory  {tmp_dir} {file_path} --run-as=root')
     print(output)
     # execute_shell_command(f'cd {tmp_dir} && cd {sub_dir}')
     os.chdir(tmp_dir)
-
-    ubi_file = get_all_file(os.path.join(tmp_dir, sub_dir), 'ubi')[0]
+    ubi_path = os.path.join(dir,tmp_dir, sub_dir)
+    print(ubi_path)
+    ubi_file = get_all_file(ubi_path, 'ubi')[0]
     ubi_basename = os.path.basename(ubi_file)
     print(f'extract ubi file {ubi_basename}')
     output = execute_shell_command(f'ubireader_extract_images -o {tmp_dir} {ubi_file} ')
@@ -126,5 +127,5 @@ def extractor(file_path: str):
         print(output)
 
 
-print(f'Need install binwalk ubi_reader.')
+print(f'Need binwalk ubi_reader.')
 fire.Fire(extractor)
