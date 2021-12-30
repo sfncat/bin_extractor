@@ -17,8 +17,14 @@ python3 setup.py install
 
 ```
 sudo apt-get install liblzo2-dev
-sudo pip install python-lzo
-sudo pip install ubi_reader
+sudo pip3 install python-lzo
+sudo pip3 install ubi_reader
+```
+
+## usage
+
+```
+python3 bin_extrator.py /tmp/a.bin
 ```
 
 
